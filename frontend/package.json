@@ -1,0 +1,40 @@
+{
+  "name": "go-wasm-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "generate": "gowasm-bindgen ../wasm/main.go --output src/generated/client.ts --go-output ../wasm/bindings_gen.go --wasm-path task.wasm",
+    "copy:worker": "cp src/generated/worker.js public/ && cp $(tinygo env TINYGOROOT)/targets/wasm_exec.js public/",
+    "build:wasm": "cd ../wasm && tinygo build -o ../frontend/public/task.wasm -target wasm -no-debug .",
+    "prebuild": "npm run generate && npm run copy:worker && npm run build:wasm",
+    "predev": "npm run generate && npm run copy:worker && npm run build:wasm",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint . && cd .. && go vet ./... && test -z \"$(gofmt -l .)\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" && cd .. && gofmt -w .",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" && cd .. && test -z \"$(gofmt -l .)\"",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "prettier": "^3.8.1",
+    "tailwindcss": "^4.1.18",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4"
+  }
+}
