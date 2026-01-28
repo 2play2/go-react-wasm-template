@@ -82,5 +82,4 @@ func Fibonacci(n int, onProgress ProgressCallback) (string, error) {
 //       return result, nil
 //   }
 //
-// Then export it in wasm/main.go and run `npm run generate` to create
-// TypeScript bindings.
+// Then export it in wasm/main.go and run `npm run wasm` to rebuild.

@@ -6,9 +6,8 @@ Run Go code in the browser via WebAssembly with a React + TypeScript frontend.
 
 1. Write Go code in `pkg/task/`
 2. Export functions in `wasm/main.go`
-3. **TinyGo** compiles Go → WebAssembly (304KB binary)
-4. **gowasm-bindgen** generates TypeScript bindings
-5. WASM runs in a **Web Worker** (doesn't block UI)
+3. **gowasm-bindgen** compiles Go → WASM and generates TypeScript bindings
+4. WASM runs in a **Web Worker** (doesn't block UI)
 
 ## Quick Start
 
@@ -35,14 +34,13 @@ Update these files with your project name:
 ## Project Structure
 
 ```
-├── pkg/task/task.go      # Your Go logic (runs in WASM and native)
+├── pkg/task/task.go      # Your Go logic (testable without WASM)
 ├── wasm/main.go          # WASM exports (what JS can call)
 ├── frontend/
 │   ├── src/
 │   │   ├── App.tsx       # React app
 │   │   └── generated/    # Auto-generated TypeScript client
-│   └── public/
-│       └── task.wasm     # Compiled WASM (built automatically)
+│   └── public/           # WASM runtime (built automatically)
 ```
 
 ## Adding Your Own Functions
@@ -68,16 +66,16 @@ func YourFunction(input string) (string, error) {
 }
 ```
 
-### 3. Generate TypeScript bindings
+### 3. Rebuild WASM
 
 ```bash
-npm run generate
+npm run wasm
 ```
 
 ### 4. Call from React
 
 ```tsx
-const wasm = await Main.init('./worker.js');
+const wasm = await GoWasm.init('./worker.js');
 const result = await wasm.yourFunction("input");
 ```
 
@@ -98,17 +96,16 @@ const result = await wasm.yourFunction("input");
 |---------|-------------|
 | `npm run dev` | Start dev server |
 | `npm run build` | Production build |
-| `npm run generate` | Regenerate TS bindings from Go |
-| `npm run build:wasm` | Rebuild WASM only |
+| `npm run wasm` | Rebuild WASM and TypeScript bindings |
 
 ## Requirements
 
 - [Go 1.23+](https://go.dev/dl/) - The programming language
 - [TinyGo](https://tinygo.org/getting-started/install/) - Go compiler optimized for small WASM (304KB vs 2.4MB)
 - [Node.js 20+](https://nodejs.org/)
-- [gowasm-bindgen](https://github.com/13rac1/gowasm-bindgen) - Generates TypeScript bindings from Go
+- [gowasm-bindgen](https://github.com/13rac1/gowasm-bindgen) - Compiles Go to WASM with TypeScript bindings
   ```bash
-  go install github.com/13rac1/gowasm-bindgen/cmd/gowasm-bindgen@latest
+  go install github.com/13rac1/gowasm-bindgen@latest
   ```
 
 ## Why Go in the Browser?
@@ -120,10 +117,10 @@ const result = await wasm.yourFunction("input");
 
 ## Tech Stack
 
-- **Go** → TinyGo → WebAssembly (304KB)
+- **Go** → TinyGo → WebAssembly (~230KB)
 - **React 19** + TypeScript + Vite
 - **Tailwind CSS** for styling
-- **gowasm-bindgen** for type-safe bindings
+- **gowasm-bindgen** for compilation and type-safe bindings
 
 ## License
 

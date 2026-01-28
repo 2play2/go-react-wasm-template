@@ -2,7 +2,7 @@
 
 // Package main is the WASM entry point.
 // Export functions here to make them callable from JavaScript.
-// Run `npm run generate` after adding new exports.
+// Run `npm run wasm` after adding new exports.
 package main
 
 import (
@@ -28,7 +28,7 @@ func Fibonacci(n int, onProgress func(percent int, message string)) (string, err
 // Steps to add a new function:
 // 1. Write your logic in pkg/task/task.go
 // 2. Create a wrapper function here that calls it
-// 3. Run `npm run generate` to create TypeScript bindings
+// 3. Run `npm run wasm` to rebuild WASM and TypeScript bindings
 // 4. Use it in React: await wasm.yourFunction(args)
 //
 // Supported types: int, float64, string, bool, []byte, callbacks, errors

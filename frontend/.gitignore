@@ -1,3 +1,8 @@
+# Generated WASM files (built by npm run wasm)
+public/wasm.wasm
+public/worker.js
+public/wasm_exec.js
+
 # Logs
 logs
 *.log

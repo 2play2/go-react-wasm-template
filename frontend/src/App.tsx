@@ -1,24 +1,17 @@
 import { useState } from 'react';
-import { Main } from './generated/client';
+import { useWasm } from './useWasm';
 
 function App() {
-  const [wasm, setWasm] = useState<Main | null>(null);
+  const { init, loading: wasmLoading } = useWasm();
   const [greeting, setGreeting] = useState<string | null>(null);
   const [fibonacci, setFibonacci] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const initWasm = async () => {
-    if (wasm) return wasm;
-    const instance = await Main.init('./worker.js');
-    setWasm(instance);
-    return instance;
-  };
-
   const handleGreet = async () => {
     setLoading(true);
     try {
-      const w = await initWasm();
-      const result = await w.greet('Developer');
+      const wasm = await init();
+      const result = await wasm.greet('Developer');
       setGreeting(result);
     } finally {
       setLoading(false);
@@ -28,13 +21,15 @@ function App() {
   const handleFibonacci = async () => {
     setLoading(true);
     try {
-      const w = await initWasm();
-      const result = await w.fibonacci(1000, () => {});
+      const wasm = await init();
+      const result = await wasm.fibonacci(1000, () => {});
       setFibonacci(result);
     } finally {
       setLoading(false);
     }
   };
+
+  const isLoading = loading || wasmLoading;
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
@@ -55,7 +50,7 @@ function App() {
           </h2>
           <button
             onClick={handleGreet}
-            disabled={loading}
+            disabled={isLoading}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
           >
             Call greet("Developer")
@@ -77,7 +72,7 @@ function App() {
           </p>
           <button
             onClick={handleFibonacci}
-            disabled={loading}
+            disabled={isLoading}
             className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
           >
             Calculate F(1000)
@@ -113,7 +108,7 @@ function App() {
             <li>
               Run{' '}
               <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">
-                npm run generate
+                npm run wasm
               </code>
             </li>
             <li>

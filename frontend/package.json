@@ -4,17 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "generate": "gowasm-bindgen ../wasm/main.go --output src/generated/client.ts --go-output ../wasm/bindings_gen.go --wasm-path task.wasm",
-    "copy:worker": "cp src/generated/worker.js public/ && cp $(tinygo env TINYGOROOT)/targets/wasm_exec.js public/",
-    "build:wasm": "cd ../wasm && tinygo build -o ../frontend/public/task.wasm -target wasm -no-debug .",
-    "prebuild": "npm run generate && npm run copy:worker && npm run build:wasm",
-    "predev": "npm run generate && npm run copy:worker && npm run build:wasm",
+    "wasm": "gowasm-bindgen ../wasm/main.go --output src/generated && cp src/generated/worker.js src/generated/wasm_exec.js src/generated/wasm.wasm public/",
+    "prebuild": "npm run wasm",
+    "predev": "npm run wasm",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint . && cd .. && go vet ./... && test -z \"$(gofmt -l .)\"",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" && cd .. && gofmt -w .",
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\" && cd .. && test -z \"$(gofmt -l .)\"",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:go": "cd .. && go test ./..."
   },
   "dependencies": {
     "react": "^19.2.0",
