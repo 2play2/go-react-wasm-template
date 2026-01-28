@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { ErrorBoundary } from './ErrorBoundary';
 
@@ -11,7 +11,7 @@ afterEach(() => {
   console.error = originalError;
 });
 
-function ThrowError({ message }: { message: string }) {
+function ThrowError({ message }: { message: string }): never {
   throw new Error(message);
 }
 

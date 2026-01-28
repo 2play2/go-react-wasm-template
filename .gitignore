@@ -9,8 +9,10 @@ public/wasm.wasm
 public/worker.js
 public/wasm_exec.js
 
-# Generated files
-src/generated/
+# Generated files (keep go-wasm.ts stub for tests)
+src/generated/worker.js
+src/generated/wasm.wasm
+src/generated/wasm_exec.js
 go/wasm/bindings_gen.go
 
 # IDE

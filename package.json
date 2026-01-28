@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "wasm": "gowasm-bindgen go/wasm/main.go --output src/generated && cp src/generated/worker.js src/generated/wasm_exec.js src/generated/wasm.wasm public/",
+    "wasm": "gowasm-bindgen go/wasm/main.go --output src/generated && mkdir -p public && cp src/generated/worker.js src/generated/wasm_exec.js src/generated/wasm.wasm public/",
     "prebuild": "npm run wasm",
     "predev": "npm run wasm",
     "dev": "vite",

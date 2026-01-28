@@ -20,15 +20,23 @@ Open http://localhost:5173
 
 ## After Creating from Template
 
-Update these files with your project name:
+Run the setup script to configure your project:
 
-1. **Go modules** - Replace `github.com/user/go-wasm-react-starter`:
-   - `go/go.mod`
-   - `go/wasm/go.mod`
-   - `go/wasm/main.go` (import statement)
+```bash
+./scripts/setup.sh github.com/yourname/yourproject
+```
 
-2. **Package name** - Update `package.json`:
-   - `"name": "your-project-name"`
+This updates Go module paths and package.json name automatically.
+
+<details>
+<summary>Manual setup (if you prefer)</summary>
+
+Replace `github.com/user/go-wasm-react-starter` in:
+- `go/go.mod`
+- `go/wasm/go.mod`
+- `go/wasm/main.go` (import statement)
+- `package.json` (name field)
+</details>
 
 ## Project Structure
 
